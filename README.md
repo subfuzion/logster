@@ -10,6 +10,8 @@ logster provides a configurable node logging facility that can write to various 
 Installation
 ------------
 
+[![NPM](https://nodei.co/npm/logster.png?downloads=true&stars=true)](https://nodei.co/npm/logster/)
+
     $ npm install logster
 
 Creating your own logger
