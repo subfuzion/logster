@@ -1,9 +1,9 @@
 var severity = require('../lib/severity')
   , Log = require('../lib/log')
-  , consoleWriter = require('../lib/consolewriter')
+  , consoleLogger = require('../lib/consolelogger')
   ;
 
-var emergencyWriter = {
+var emergencyLogger = {
   name: 'console',
   write: function(logEntry) {
     if (logEntry.levelCode === severity.EMERGENCY) {
@@ -12,8 +12,8 @@ var emergencyWriter = {
   }
 };
 
-var log = new Log('debug', consoleWriter)
-  .addWriter(emergencyWriter);
+var log = new Log('debug', consoleLogger)
+  .addLogger(emergencyLogger);
 
 
 //log.write('throws');
@@ -28,4 +28,9 @@ log.info('hello');
 var web = { category: 'web' };
 log.info(web, 'received request', { userid: 'tester' });
 
-log.info('a log entry with lots custom data attributes', 'interesting stuff', 'more data', { userid: 'tester' }, { moredata: true, stuff: 'lots' });
+log.info('a log entry with lots custom data attributes',
+  'interesting',
+  'cool',
+  'stuff',
+  { userid: 'tester' },
+  { moredata: true, stuff: 'lots' });
