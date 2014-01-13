@@ -15,6 +15,8 @@ mongodb.MongoClient.connect(uri, function(err, client) {
   log.write({ level: severity.INFO }, 'test message', 'extra');
   log.emergency('emergency message', 'extra');
 
+  log.info('a log entry with lots custom data attributes', 'interesting stuff', 'more data', { userid: 'tester' }, { moredata: true, stuff: 'lots' });
+
   log.drain(function() {
     console.log('finished writing all log entries to mongo');
     process.exit(0);

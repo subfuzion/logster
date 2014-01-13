@@ -27,3 +27,5 @@ log.info('hello');
 
 var web = { category: 'web' };
 log.info(web, 'received request', { userid: 'tester' });
+
+log.info('a log entry with lots custom data attributes', 'interesting stuff', 'more data', { userid: 'tester' }, { moredata: true, stuff: 'lots' });
