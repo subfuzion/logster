@@ -1,6 +1,8 @@
 logster
 -----------
 
+[![NPM version](https://badge.fury.io/js/logster.png)](http://badge.fury.io/js/logster)
+
 logster provides a configurable node logging facility that can write to various destinations. It provides the following loggers "out of the box":
 
   * consolelogger
