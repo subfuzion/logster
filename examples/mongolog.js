@@ -37,8 +37,5 @@ mongodb.MongoClient.connect(uri, function(err, client) {
     process.exit(0);
   });
 
-
-  var q = async.queue(function())
-
 });
 
