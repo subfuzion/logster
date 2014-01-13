@@ -22,4 +22,8 @@ log.write({ level: severity.INFO }, 'test message', 'extra');
 
 log.emergency('emergency message', 'extra');
 
+log.info('hello');
 
+
+var web = { category: 'web' };
+log.info(web, 'received request', { userid: 'tester' });
