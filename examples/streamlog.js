@@ -17,7 +17,7 @@ streamLogger.stream = stream;
 
 log.write({ level: severity.INFO }, 'test message');
 log.emergency('emergency message');
-log.info('a log entry with lots custom data attributes',
+log.info('a log entry with lots of custom data attributes',
   'interesting',
   'cool',
   'stuff',

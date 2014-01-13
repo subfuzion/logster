@@ -1,45 +1,66 @@
 node-logger
 -----------
 
-node-logger provides a configurable logging facility that can write to various destinations. It provides the following log writers "out of the box":
+node-logger provides a configurable logging facility that can write to various destinations. It provides the following loggers "out of the box":
 
-  * consolewriter
-  * streamwriter
-  * mongowriter
+  * consolelogger
+  * streamlogger
+  * mongologger
 
 Installation
 ------------
 
     $ npm install node-logger
 
-Creating your own writer
+Creating your own logger
 ------------------------
 
-Writers are objects that have a `name` property a `write` function, and optionally a `drain` function.
+Loggers are objects that have a `name` property a `log` function, and optionally a `drain` function.
 
 
 Although node-logger already comes with a console logger, here is an example of how you could create your own:
 
-`consolewriter.js`
+`consolelogger.js`
 ```
+var format = require('node-logger').textFormatter.format;
+
 module.exports = {
   name: 'console',
   write: function(logEntry) {
     console.log(format(logEntry));
   }
 };
-``` 
-node-logger provides a default formatter (`textformatter`) that standardizes the look of log entries for text-based output. Both `consolewriter` and `streamwriter` have a `formatter` property set to this. You can set the `formatter` property to your own object that has a `format` function. The function should have a logEntry parameter and return a string.
+```
 
-### Async writers
+node-logger provides a default formatter (`textformatter`) that standardizes the look of log entries for text-based output. Both `consolelogger` and `streamlogger` have a `formatter` property set to this. You can set the `formatter` property to your own object that has a `format` function. The function should have a logEntry parameter and return a string.
 
-The log interface does not require callbacks; however, log writes still need to be properly serialized. Writers that write asynchronously, such as `mongowriter` use the `async` package to queue log entries. Async writers should provide a `drain` callback that can be used to check if the queue has been drained. This is important to ensure the process does not exit with pending writes.
+### Async loggers
 
-To implement your own async writer, take a look at the source for `mongowriter.js`.
+The log interface does not require callbacks; however, log writes still need to be properly serialized. loggers that write asynchronously, such as `mongologger` use the `async` package to queue log entries. Async loggers should provide a `drain` callback that can be used to check if the queue has been drained. This is important to ensure the process does not exit with pending writes.
+
+To implement your own async logger, take a look at the source for `mongologger.js`.
 
 ## Log Severity levels
 
 node-logger uses the same values as syslog. When creating a new log, set the severity level using values defined in `severity.js`.
+
+Note: the first parameter to the Log constructor can be the number value or the level name (case-insensitive).
+
+The following are all equivalent:
+
+```
+var severity = require('node-logger').severity;
+
+log = new Log(severity.DEBUG, consoleLogger);
+
+log = new Log('DEBUG', consoleLogger);
+
+log = new Log('debug', consoleLogger);
+
+log = new Log(7, consoleLogger);
+
+console.log(severity.str(7)); // => 'DEBUG'
+```
 
 level     | value | purpose
 --------- | ----- | -------
@@ -54,23 +75,71 @@ INFO      | 6     | informational messages
 DEBUG     | 7     | debug-level messages
 
 
+
+
 Examples
 --------
 
-### Create a log
+### Creating a console log
 
 ```
 var Log = require('node-logger').Log
   , severity = require('node-logger').severity
   , consoleLogger = require('node-logger').consoleLogger
-  , streamLogger = require('node-logger').streamLogger
-  , mongoLogger = require('node-logger').mongoLogger
+  , log
   ;
 
-var log = new Log(severity.DEBUG, consoleLogger);
+log = new Log(severity.DEBUG, consoleLogger);
 ```
 
-Note: the first paramater to the Log constructor can be a value from `severity`, or it can be entered as the equivalent number value or as a string (case-insensitive).
+### Creating a stream log
+
+```
+var Log = require('node-logger').Log
+  , severity = require('node-logger').severity
+  , streamLogger = require('node-logger').streamLogger
+  , log
+  ;
+
+streamLogger.stream = fs.createWriteStream(__dirname + '/stream.log');
+
+log = new Log(severity.DEBUG, streamLogger);
+```
+
+### Creating a mongo log
+
+```
+var Log = require('node-logger').Log
+  , severity = require('node-logger').severity
+  , mongoLogger = require('node-logger').mongoLogger
+  , mongodb = require('mongodb')
+  , mongoUri = '...'
+  ;
+
+mongodb.MongoClient.connect(mongoUri, function(err, client) {
+
+  mongoLogger.db = client;
+
+  var log = new Log('debug', mongoLogger);
+  
+  log.info('hello');
+
+  // check that async loggers have finished draining
+  // the log queue before exiting the process...
+  
+  log.drain(function() {
+    console.log('finished writing all log entries to mongo');
+    process.exit(0);
+  });
+
+});
+```
+
+### Create a log with multiple loggers
+
+    var log = new Log(severity.DEBUG, consoleLogger, mongoLogger, ...);
+
+Note: this version doesn't support different logger severity levels.
 
 ### Log a simple message
 
@@ -82,51 +151,63 @@ Output:
 
 ### Log a message for a specific category
 
-    log.info('api', 'hello');
+    log.info({ category: 'api' }, 'hello');
+    
+    // define category constants to make using categories easier:
+    var API = { category: 'api' }
+      , DATA = { category: 'data' }
+      ;
+      
+    ...
+    
+    log.info(API, 'received GET request');
+    log.info(DATA, 'retrieved some data');
 
 Output:
 
     [Mon Jan 13 2014 06:42:54 GMT-0800 (PST)] INFO (api) hello
 
-### Log with custom data
+### Log with custom data and tags
 
-    log.info('a log entry with lots custom data attributes',
-      'interesting stuff',
-      'more data',
-      { userid: 'tester' },
-      { moredata: true, stuff: 'lots' });
+Parameters passed after message are either added to a `data` property or to a `tags` property array, depending on whether they are objects or primitive values.
+
+```
+log.info('a log entry with lots of custom data attributes',
+  'interesting',
+  'cool',
+  'stuff',
+  { userid: 'tester' },
+  { moredata: true, stuff: 'lots' });
+```
 
 Output:
 
 ```
-[Mon Jan 13 2014 11:49:57 GMT-0800 (PST)] INFO a log entry with lots custom data attributes { data:  [
-  'interesting stuff',
-  'more data',
-  { userid: 'tester' },
-  { moredata: true, stuff: 'lots' } ] }
+[Mon Jan 13 2014 13:20:20 GMT-0800 (PST)] INFO a log entry with lots of custom data attributes {
+  data:  { userid: 'tester', moredata: true, stuff: 'lots' },
+  tags:  [ 'interesting', 'cool', 'stuff' ] }
 ```
 
-Mongo document (using mongowriter)
+Mongo document (using mongologger)
 
 ```
 {
-	"timestamp" : ISODate("2014-01-13T19:53:26.459Z"),
+	"timestamp" : ISODate("2014-01-13T21:23:49.744Z"),
 	"category" : "",
 	"level" : "INFO",
 	"levelCode" : 6,
-	"message" : "a log entry with lots custom data attributes",
-	"data" : [
-		"interesting stuff",
-		"more data",
-		{
-			"userid" : "tester"
-		},
-		{
-			"moredata" : true,
-			"stuff" : "lots"
-		}
+	"message" : "a log entry with lots of custom data attributes",
+	"data" : {
+		"userid" : "tester",
+		"moredata" : true,
+		"stuff" : "lots"
+	},
+	"tags" : [
+		"interesting",
+		"cool",
+		"stuff"
 	],
-	"_id" : ObjectId("52d44436429b9619a8a9dc27")
+	"_id" : ObjectId("52d45965b565194aa9b39676")
 }
 ```
 

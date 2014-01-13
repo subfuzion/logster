@@ -15,7 +15,7 @@ mongodb.MongoClient.connect(uri, function(err, client) {
   log.write({ level: severity.INFO }, 'test message', 'extra');
   log.emergency('emergency message', 'extra');
 
-  log.info('a log entry with lots custom data attributes',
+  log.info('a log entry with lots of custom data attributes',
     'interesting',
     'cool',
     'stuff',

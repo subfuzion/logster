@@ -5,15 +5,14 @@ var severity = require('../lib/severity')
 
 var emergencyLogger = {
   name: 'console',
-  write: function(logEntry) {
+  log: function(logEntry) {
     if (logEntry.levelCode === severity.EMERGENCY) {
       console.log('HOLY SHITTAKE');
     }
   }
 };
 
-var log = new Log('debug', consoleLogger)
-  .addLogger(emergencyLogger);
+var log = new Log('debug', consoleLogger, emergencyLogger);
 
 
 //log.write('throws');
