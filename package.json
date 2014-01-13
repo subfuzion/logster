@@ -2,8 +2,20 @@
   "name": "node-logger",
   "version": "0.0.1",
   "description": "A flexible, configurable logger that can write to various destinations, including the console, streams, and MongoDB.",
-  "main": "index.js",
-  "directories": {
+  "keywords": [
+    "log",
+    "logger",
+    "logging"
+  ],"main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tonypujals/node-logger"
+  },
+  "bugs": {
+    "email": "npm-@googlegroups.com",
+    "url": "https://github.com/tonypujals/node-logger/issues"
+  },  "directories": {
+    "lib": "lib",
     "example": "examples"
   },
   "scripts": {
