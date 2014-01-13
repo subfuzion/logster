@@ -18,12 +18,8 @@ var log = new Log('debug', consoleWriter)
 
 //log.write('throws');
 
-log.write({ level: severity.INFO }, 'test message', 'extra', function(err, logEntry) {
-  if (err) return console.log(err);
-});
+log.write({ level: severity.INFO }, 'test message', 'extra');
 
-log.emergency('emergency message', 'extra', function(err, logEntry) {
-  if (err) return console.log(err);
-});
+log.emergency('emergency message', 'extra');
 
 

@@ -7,23 +7,14 @@ var severity = require('../lib/severity')
 var log = new Log('debug', streamWriter);
 
 
-log.write({ level: severity.INFO }, 'test message', 'extra', function(err, logEntry) {
-  if (err) return console.log(err);
-});
-
-log.emergency('emergency message', 'extra', function(err, logEntry) {
-  if (err) return console.log(err);
-});
+log.write({ level: severity.INFO }, 'test message', 'extra');
+log.emergency('emergency message', 'extra');
 
 
 var stream = fs.createWriteStream(__dirname + '/stream.log');
 streamWriter.stream = stream;
 
-log.write({ level: severity.INFO }, 'test message', 'extra', function(err, logEntry) {
-  if (err) return console.log(err);
-});
+log.write({ level: severity.INFO }, 'test message', 'extra');
+log.emergency('emergency message', 'extra');
 
-log.emergency('emergency message', 'extra', function(err, logEntry) {
-  if (err) return console.log(err);
-});
 
