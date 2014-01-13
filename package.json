@@ -1,7 +1,7 @@
 {
   "name": "node-logger",
   "version": "0.0.1",
-  "description": "A simple but flexible logger that can write to various destinations, including the console, streams, and MongoDB.",
+  "description": "A flexible, configurable logger that can write to various destinations, including the console, streams, and MongoDB.",
   "main": "index.js",
   "directories": {
     "example": "examples"
