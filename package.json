@@ -10,11 +10,11 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tonypujals/node-logger"
+    "url": "https://github.com/tonypujals/logster"
   },
   "bugs": {
     "email": "npm-@googlegroups.com",
-    "url": "https://github.com/tonypujals/node-logger/issues"
+    "url": "https://github.com/tonypujals/logster/issues"
   },
   "directories": {
     "lib": "lib",
