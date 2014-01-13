@@ -1,6 +1,6 @@
 {
   "name": "logster",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "A flexible, configurable logger that can write to various destinations, including the console, streams, and MongoDB.",
   "keywords": [
     "log",
