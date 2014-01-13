@@ -1,7 +1,7 @@
-node-logger
+logster
 -----------
 
-node-logger provides a configurable logging facility that can write to various destinations. It provides the following loggers "out of the box":
+logster provides a configurable node logging facility that can write to various destinations. It provides the following loggers "out of the box":
 
   * consolelogger
   * streamlogger
@@ -10,7 +10,7 @@ node-logger provides a configurable logging facility that can write to various d
 Installation
 ------------
 
-    $ npm install node-logger
+    $ npm install logster
 
 Creating your own logger
 ------------------------
@@ -18,11 +18,11 @@ Creating your own logger
 Loggers are objects that have a `name` property a `log` function, and optionally a `drain` function.
 
 
-Although node-logger already comes with a console logger, here is an example of how you could create your own:
+Although logster already comes with a console logger, here is an example of how you could create your own:
 
 `consolelogger.js`
 ```
-var format = require('node-logger').textFormatter.format;
+var format = require('logster').textFormatter.format;
 
 module.exports = {
   name: 'console',
@@ -32,7 +32,7 @@ module.exports = {
 };
 ```
 
-node-logger provides a default formatter (`textformatter`) that standardizes the look of log entries for text-based output. Both `consolelogger` and `streamlogger` have a `formatter` property set to this. You can set the `formatter` property to your own object that has a `format` function. The function should have a logEntry parameter and return a string.
+logster provides a default formatter (`textformatter`) that standardizes the look of log entries for text-based output. Both `consolelogger` and `streamlogger` have a `formatter` property set to this. You can set the `formatter` property to your own object that has a `format` function. The function should have a logEntry parameter and return a string.
 
 ### Async loggers
 
@@ -42,14 +42,14 @@ To implement your own async logger, take a look at the source for `mongologger.j
 
 ## Log Severity levels
 
-node-logger uses the same values as syslog. When creating a new log, set the severity level using values defined in `severity.js`.
+logster uses the same values as syslog. When creating a new log, set the severity level using values defined in `severity.js`.
 
 Note: the first parameter to the Log constructor can be the number value or the level name (case-insensitive).
 
 The following are all equivalent:
 
 ```
-var severity = require('node-logger').severity;
+var severity = require('logster').severity;
 
 log = new Log(severity.DEBUG, consoleLogger);
 
@@ -83,9 +83,9 @@ Examples
 ### Creating a console log
 
 ```
-var Log = require('node-logger').Log
-  , severity = require('node-logger').severity
-  , consoleLogger = require('node-logger').consoleLogger
+var Log = require('logster').Log
+  , severity = require('logster').severity
+  , consoleLogger = require('logster').consoleLogger
   , log
   ;
 
@@ -95,9 +95,9 @@ log = new Log(severity.DEBUG, consoleLogger);
 ### Creating a stream log
 
 ```
-var Log = require('node-logger').Log
-  , severity = require('node-logger').severity
-  , streamLogger = require('node-logger').streamLogger
+var Log = require('logster').Log
+  , severity = require('logster').severity
+  , streamLogger = require('logster').streamLogger
   , log
   ;
 
@@ -109,9 +109,9 @@ log = new Log(severity.DEBUG, streamLogger);
 ### Creating a mongo log
 
 ```
-var Log = require('node-logger').Log
-  , severity = require('node-logger').severity
-  , mongoLogger = require('node-logger').mongoLogger
+var Log = require('logster').Log
+  , severity = require('logster').severity
+  , mongoLogger = require('logster').mongoLogger
   , mongodb = require('mongodb')
   , mongoUri = '...'
   ;
