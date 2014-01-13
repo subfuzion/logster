@@ -88,7 +88,47 @@ Output:
 
     [Mon Jan 13 2014 06:42:54 GMT-0800 (PST)] INFO (api) hello
 
+### Log with custom data
 
+    log.info('a log entry with lots custom data attributes',
+      'interesting stuff',
+      'more data',
+      { userid: 'tester' },
+      { moredata: true, stuff: 'lots' });
+
+Output:
+
+```
+[Mon Jan 13 2014 11:49:57 GMT-0800 (PST)] INFO a log entry with lots custom data attributes { data:  [
+  'interesting stuff',
+  'more data',
+  { userid: 'tester' },
+  { moredata: true, stuff: 'lots' } ] }
+```
+
+Mongo document (using mongowriter)
+
+```
+{
+	"timestamp" : ISODate("2014-01-13T19:53:26.459Z"),
+	"category" : "",
+	"level" : "INFO",
+	"levelCode" : 6,
+	"message" : "a log entry with lots custom data attributes",
+	"data" : [
+		"interesting stuff",
+		"more data",
+		{
+			"userid" : "tester"
+		},
+		{
+			"moredata" : true,
+			"stuff" : "lots"
+		}
+	],
+	"_id" : ObjectId("52d44436429b9619a8a9dc27")
+}
+```
 
 
 
