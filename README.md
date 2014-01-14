@@ -7,13 +7,13 @@ logster provides a simple, but extensible node logging facility that can write t
 
 There are quite a few [log packages](https://npmjs.org/search?q=log) for node. logster strives to provide the same simplicity as the tiniest of these packages with "batteries included," while also providing a design that makes it easy to add new loggers.
 
-It provides the following loggers "out of the box":
+logster provides the following loggers:
 
   * consolelogger
   * streamlogger
   * mongologger
   
-logster can be easily configure to simultaenously log to multiple destinations, as this snipped demonstrates:
+logster can easily log to multiple destinations simultaneously,  as this snippet demonstrates:
 
     var log = new Log(severity.DEBUG, consoleLogger, mongoLogger, ...);
     
