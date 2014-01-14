@@ -94,6 +94,8 @@ log = new Log(7, consoleLogger);
 console.log(severity.str(7)); // => 'DEBUG'
 ```
 
+Severity Levels
+
 level     | value | purpose
 --------- | ----- | -------
 NONE      | -1    | don't log
@@ -105,8 +107,6 @@ WARNING   | 4     | warning conditions
 NOTICE    | 5     | normal but significant condition
 INFO      | 6     | informational messages
 DEBUG     | 7     | debug-level messages
-
-
 
 
 Examples
