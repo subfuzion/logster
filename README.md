@@ -165,11 +165,14 @@ Output:
 ### Log a message with placeholders like console.log and util.format
 
 Extra parameters are either used as custom tags and data (see section below) or for message formatting just like with `console.log` and `util.format`, depending on the presence of the following placeholders in the log message:
+
   * %s string
   * %d number
   * %j json
 
-    log.info('Hello %s', 'World');
+```
+log.info('Hello %s', 'World');
+```
 
 Output:
 
@@ -197,16 +200,20 @@ Output:
 ### Log a message for a specific category
 
     log.info({ category: 'api' }, 'hello');
-    
-    // define category constants to make using categories easier:
-    var API = { category: 'api' }
-      , DATA = { category: 'data' }
-      ;
-      
-    ...
-    
-    log.info(API, 'received GET request');
-    log.info(DATA, 'retrieved some data');
+
+
+Define constants to make using categories easier:
+
+```
+var API = { category: 'api' }
+  , DATA = { category: 'data' }
+  ;
+
+...
+
+log.info(API, 'received GET request');
+log.info(DATA, 'retrieved some data');
+```
 
 Output:
 
