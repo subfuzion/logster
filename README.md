@@ -38,14 +38,33 @@ Although logster already comes with a console logger, here is an example of how 
 var format = require('logster').textFormatter.format;
 
 module.exports = {
-  name: 'console',
-  write: function(logEntry) {
+  name: 'consolelogger',
+  log: function(logEntry) {
     console.log(format(logEntry));
   }
 };
 ```
 
-logster provides a default formatter (`textformatter`) that standardizes the look of log entries for text-based output. Both `consolelogger` and `streamlogger` have a `formatter` property set to this. You can set the `formatter` property to your own object that has a `format` function. The function should have a logEntry parameter and return a string.
+As the example indicates, logster comes with a default formatter (`textformatter`) that standardizes the look of log entries for text-based output. Both `consolelogger` and `streamlogger` have a `formatter` property set to this. You can set this `formatter` property to your own object that has a `format` function.
+```
+   var customTextFormatter = {
+     format: function (logEntry) {
+       // optionally handle extra args
+       // return formatted string
+     }
+   };
+```
+
+### Log entry properties
+
+  * timestamp
+  * message
+  * level
+  * levelCode
+  * category
+  * data
+  * tags
+
 
 ### Async loggers
 
