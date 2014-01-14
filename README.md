@@ -38,14 +38,33 @@ Although logster already comes with a console logger, here is an example of how 
 var format = require('logster').textFormatter.format;
 
 module.exports = {
-  name: 'console',
-  write: function(logEntry) {
+  name: 'consolelogger',
+  log: function(logEntry) {
     console.log(format(logEntry));
   }
 };
 ```
 
-logster provides a default formatter (`textformatter`) that standardizes the look of log entries for text-based output. Both `consolelogger` and `streamlogger` have a `formatter` property set to this. You can set the `formatter` property to your own object that has a `format` function. The function should have a logEntry parameter and return a string.
+As the example indicates, logster comes with a default formatter (`textformatter`) that standardizes the look of log entries for text-based output. Both `consolelogger` and `streamlogger` have a `formatter` property set to this. You can set this `formatter` property to your own object that has a `format` function.
+```
+   var customTextFormatter = {
+     format: function (logEntry) {
+       // optionally handle extra args
+       // return formatted string
+     }
+   };
+```
+
+### Log entry properties
+
+  * timestamp
+  * message
+  * level
+  * levelCode
+  * category
+  * data
+  * tags
+
 
 ### Async loggers
 
@@ -162,19 +181,58 @@ Output:
 
     [Mon Jan 13 2014 06:42:54 GMT-0800 (PST)] INFO hello
 
+### Log a message with placeholders like console.log and util.format
+
+Extra parameters are either used as custom tags and data (see section below) or for message formatting just like with `console.log` and `util.format`, depending on the presence of the following placeholders in the log message:
+
+  * %s string
+  * %d number
+  * %j json
+
+```
+log.info('Hello %s', 'World');
+```
+
+Output:
+
+    [Mon Jan 13 2014 06:42:54 GMT-0800 (PST)] INFO Hello World
+
+However, unlike `console.log` and `util.format`, any extra parameters that do not have corresponding placeholders are *not* appended to the formatted string. Instead, they are considered to be custom tags and data, as described in another section below.
+
+    log.info('Hello', 'World');
+
+Output:
+
+    [Mon Jan 13 2014 06:42:54 GMT-0800 (PST)] INFO Hello { tags: [ 'World' ] }
+
+For complex log entries with a large number of parameters, it may be less confusing to format the message separately than trying to keep track of placeholders:
+
+    var message = util.format('Hello %s, %s is the %s of %s', 'Bob', 'today', 'first', 'the rest of your life!');
+    log.info(message, 'silly', 'greetings', 'bob');
+
+Output:
+
+    [Mon Jan 13 2014 06:42:54 GMT-0800 (PST)] INFO Hello Bob, today is the first day of the rest of your life!,
+      { tags: [ 'silly', 'greetings', 'bob' ] }
+
+
 ### Log a message for a specific category
 
     log.info({ category: 'api' }, 'hello');
-    
-    // define category constants to make using categories easier:
-    var API = { category: 'api' }
-      , DATA = { category: 'data' }
-      ;
-      
-    ...
-    
-    log.info(API, 'received GET request');
-    log.info(DATA, 'retrieved some data');
+
+
+Define constants to make using categories easier:
+
+```
+var API = { category: 'api' }
+  , DATA = { category: 'data' }
+  ;
+
+...
+
+log.info(API, 'received GET request');
+log.info(DATA, 'retrieved some data');
+```
 
 Output:
 
@@ -182,7 +240,7 @@ Output:
 
 ### Log with custom data and tags
 
-Parameters passed after message are either added to a `data` property or to a `tags` property array, depending on whether they are objects or primitive values.
+After filling in any placholders in the message (as described previously), any extra parameters are either added to a `data` property or to a `tags` property array, depending on whether they are objects or primitive values.
 
 ```
 log.info('a log entry with lots of custom data attributes',
