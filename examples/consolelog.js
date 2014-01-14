@@ -33,3 +33,8 @@ log.info('a log entry with lots custom data attributes',
   'stuff',
   { userid: 'tester' },
   { moredata: true, stuff: 'lots' });
+
+
+log.info('hello %s! You are #%d!', 'World', 1);
+
+log.info('hello %s! You are #%d! %j', 'World', 1, { rank: 1 }, 'cool', { important: true });
