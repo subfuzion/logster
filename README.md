@@ -3,12 +3,21 @@ logster
 
 [![NPM version](https://badge.fury.io/js/logster.png)](http://badge.fury.io/js/logster)
 
-logster provides a configurable node logging facility that can write to various destinations. It provides the following loggers "out of the box":
+logster provides a simple, but extensible node logging facility that can write to various destinations. logster supports syslog severity levels, categories, and custom data and tags. It is easy to add new loggers and formatters. 
+
+There are quite a few [log packages](https://npmjs.org/search?q=log) for node. logster strives to provide the same simplicity as the tiniest of these packages with "batteries included," while also providing a design that makes it easy to add new loggers.
+
+It provides the following loggers "out of the box":
 
   * consolelogger
   * streamlogger
   * mongologger
+  
+logster can be easily configure to simultaenously log to multiple destinations, as this snipped demonstrates:
 
+    var log = new Log(severity.DEBUG, consoleLogger, mongoLogger, ...);
+    
+  
 Installation
 ------------
 
