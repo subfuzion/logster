@@ -1,7 +1,7 @@
 {
   "name": "logster",
   "version": "0.0.4",
-  "description": "Simple but powerful logger for Node. Includes console, stream, and Mongo loggers. Adding custom formatters and loggers is simple",
+  "description": "Simple but powerful logger for Node. Includes console, stream, and Mongo loggers. Adding custom formatters and loggers is simple.",
   "keywords": [
     "log",
     "logger",
