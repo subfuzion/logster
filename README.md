@@ -162,6 +162,38 @@ Output:
 
     [Mon Jan 13 2014 06:42:54 GMT-0800 (PST)] INFO hello
 
+### Log a message with placeholders like console.log and util.format
+
+Extra parameters are either used as custom tags and data (see section below) or for message formatting just like with `console.log` and `util.format`, depending on the presence of the following placeholders in the log message:
+  * %s string
+  * %d number
+  * %j json
+
+    log.info('Hello %s', 'World');
+
+Output:
+
+    [Mon Jan 13 2014 06:42:54 GMT-0800 (PST)] INFO Hello World
+
+However, unlike `console.log` and `util.format`, any extra parameters that do not have corresponding placeholders are *not* appended to the formatted string. Instead, they are considered to be custom tags and data, as described in another section below.
+
+    log.info('Hello', 'World');
+
+Output:
+
+    [Mon Jan 13 2014 06:42:54 GMT-0800 (PST)] INFO Hello { tags: [ 'World' ] }
+
+For complex log entries with a large number of parameters, it may be less confusing to format the message separately than trying to keep track of placeholders:
+
+    var message = util.format('Hello %s, %s is the %s of %s', 'Bob', 'today', 'first', 'the rest of your life!');
+    log.info(message, 'silly', 'greetings', 'bob');
+
+Output:
+
+    [Mon Jan 13 2014 06:42:54 GMT-0800 (PST)] INFO Hello Bob, today is the first day of the rest of your life!,
+      { tags: [ 'silly', 'greetings', 'bob' ] }
+
+
 ### Log a message for a specific category
 
     log.info({ category: 'api' }, 'hello');
@@ -182,7 +214,7 @@ Output:
 
 ### Log with custom data and tags
 
-Parameters passed after message are either added to a `data` property or to a `tags` property array, depending on whether they are objects or primitive values.
+After filling in any placholders in the message (as described previously), any extra parameters are either added to a `data` property or to a `tags` property array, depending on whether they are objects or primitive values.
 
 ```
 log.info('a log entry with lots of custom data attributes',
