@@ -1,5 +1,5 @@
 module.exports = {
-  Log: require('./lib/log.js').Log,
+  Log: require('./lib/log'),
   severity: require('./lib/severity'),
   textFormatter: require('./lib/textformatter'),
   consoleLogger: require('./lib/consolelogger'),

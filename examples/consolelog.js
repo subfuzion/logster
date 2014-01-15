@@ -38,3 +38,9 @@ log.info('a log entry with lots custom data attributes',
 log.info('hello %s! You are #%d!', 'World', 1);
 
 log.info('hello %s! You are #%d! %j', 'World', 1, { rank: 1 }, 'cool', { important: true });
+
+
+log.data = { hostname: require('os').hostname() };
+
+log.info('testing static data');
+
