@@ -21,7 +21,7 @@ logster can easily log to multiple destinations simultaneously,  as this snippet
 Installation
 ------------
 
-[![NPM](https://nodei.co/npm/logster.png)](https://nodei.co/npm/logster/)
+[![NPM](https://nodei.co/npm/logster.png?version=updatecache1)](https://nodei.co/npm/logster/)
 
     $ npm install logster
 
