@@ -21,7 +21,7 @@ logster can easily log to multiple destinations simultaneously,  as this snippet
 Installation
 ------------
 
-[![NPM](https://nodei.co/npm/logster.png?version=updatecache1)](https://nodei.co/npm/logster/)
+[![NPM](https://nodei.co/npm/logster.png)](https://nodei.co/npm/logster/)
 
 (note: npm badge is currently broken due to GitHub caching and possibly incorrect cache headers from https://nodei.co/)
 (See: [GitHub Image Proxy breaking Nodei.co images in markdown](https://github.com/rvagg/nodei.co/issues/9)
