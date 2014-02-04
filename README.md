@@ -23,10 +23,6 @@ Installation
 
 [![NPM](https://nodei.co/npm/logster.png)](https://nodei.co/npm/logster/)
 
-(note: npm badge is currently broken due to GitHub caching)  
-(See: [GitHub Image Proxy breaking Nodei.co images in markdown](https://github.com/rvagg/nodei.co/issues/9)  
-(See: [Caching https images is a terrible idea. You broke all badges in all readmes](https://twitter.com/feross/status/428435981516038144)  
-
     $ npm install logster
 
 Creating your own logger
